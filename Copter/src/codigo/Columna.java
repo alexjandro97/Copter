@@ -71,22 +71,16 @@ public class Columna {
         
     }
     
-    public boolean mueve(Graphics2D g2, Pajaro p){
+    public boolean mueve(Graphics2D g2, Caza c){
         mueveColumna();
         g2.setColor(Color.BLUE);
         
         g2.drawImage(col_abajo, (int)base.getX(), (int)base.getY()-ancho_columna/2, null);
         g2.drawImage(col_arriba, (int)capitel.getX(), (int)capitel.getY()+ancho_columna/2, null);
        
-        //si el pájaro está en la columna, subo 1 el marcador
-        return (capitel.getX() == p.x);
-       //oculto la fisica del juego
-//        g2.fill(circuloInferior);
-//        g2.fill(circuloSuperior);
-//        g2.setColor(Color.PINK);
-//        g2.fill(capitel);
-//        g2.fill(base);
-        
+        //si el caza está en la columna, subo 1 el marcador
+        return (capitel.getX() == c.x);
+
      
     }
     

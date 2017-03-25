@@ -5,19 +5,115 @@
  */
 package codigo;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.Timer;
 
 /**
  *
  * @author alex
  */
 public class Ventanajuego extends javax.swing.JFrame {
+    
+    boolean gameOver = false;
+    
+    Caza miCaza = new Caza(30);
 
+    static int ANCHOPANTALLA = 700;
+    static int ALTOPANTALLA = 750;
+    int ancho_columna = 79;
+    int SEPARACION_COLUMNAS = ancho_columna;
+    int numColumnas = 3;
+    int puntuacion = 0;
+    int contadorAnimacion = 0;
+    //imagenes de los adornos
+    Image casas, planetas;
+    int posicionMatorralesY = 0;
+    //array de columnas
+    Columna[] columnas = new Columna[numColumnas];
+
+    //los dos suelos para hacer el truco de que parezca infinito
+    Suelo miSuelo1 = new Suelo(0, ALTOPANTALLA * 0.60);
+    Suelo miSuelo2 = new Suelo(miSuelo1.getWidth(), ALTOPANTALLA * 0.60);
+    
+    BufferedImage buffer = null;
+    Graphics2D bufferGraphics, lienzoGraphics = null;
+
+    //TEMPORIZADOR DEL JUEGO: AQUI SE LLAMA A LA ANIMACIÓN
+    Timer temporizador = new Timer(10,new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            bucleDelJuego();
+        }
+    });
+    
     /**
      * Creates new form Ventanajuego
      */
     public Ventanajuego() {
-        initComponents();
+       initComponents();
+        inicializaBuffers();
+        temporizador.start();
+        jDialog1.setSize(774, 549);
+        for (int i=0; i<numColumnas; i++){
+            columnas[i] = new Columna(ANCHOPANTALLA + i*SEPARACION_COLUMNAS, ANCHOPANTALLA);
+        }
+    }
+    
+    private Image cargaImagen(String nombreImagen, double altoImagen){
+        return (new ImageIcon(new ImageIcon(getClass().getResource(nombreImagen))
+                .getImage().getScaledInstance(ANCHOPANTALLA, (int) altoImagen, Image.SCALE_DEFAULT))).getImage();
+    }
+    
+    private void inicializaBuffers(){
+        lienzoGraphics = (Graphics2D) jPanel1.getGraphics();
+        buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
+        bufferGraphics = buffer.createGraphics();
+        
+        bufferGraphics.setColor(Color.BLACK);
+        bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
+        //carga las imagenes de los adornos
+        
+        casas = cargaImagen("/imagenes/casas.png", ALTOPANTALLA*0.05);
+        planetas = cargaImagen("/imagenes/Death_Star.png", ALTOPANTALLA*0.10);
+        posicionMatorralesY = (int)(ALTOPANTALLA * 0.60)-casas.getHeight(null);
+    }
+    
+    private void bucleDelJuego(){
+        contadorAnimacion++;
+        if (contadorAnimacion > 30) {contadorAnimacion = 0;}
+        //limpio la pantalla
+        bufferGraphics.setColor(new Color(113, 198, 205)); //el color original del flappy bird
+        bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
+        bufferGraphics.drawImage(casas, 0,posicionMatorralesY, null);
+        bufferGraphics.drawImage(planetas, 0,0, null);
+        //dibujo el pájaro en su nueva posición
+        miCaza.mueve(bufferGraphics, contadorAnimacion);
+        //desplazo las columnas a la izquierda. Si alguna coincide con la posicion del pajaro, incremento en 1 el marcador
+        for (int i=0; i<numColumnas; i++){
+            if (columnas[i].mueve(bufferGraphics, miCaza)){
+                puntuacion++;
+            }
+        }
+        //avanza el suelo 
+        miSuelo1.mueve(bufferGraphics);
+        miSuelo2.mueve(bufferGraphics);
+        //dibuja el marcador
+        bufferGraphics.setFont(new Font("Courier New", Font.BOLD, 80)); 
+        bufferGraphics.drawString(" " + puntuacion, ANCHOPANTALLA/3, 70);
+        //dibuja el resultado
+        lienzoGraphics.drawImage(buffer, 0,0, null);
+        
+                //chequea si ha chocado con alguna columna
+       
     }
 
     /**
@@ -29,13 +125,60 @@ public class Ventanajuego extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1.setFont(new java.awt.Font("DialogInput", 1, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("¡¡ GAME OVER !!");
 
-        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("No habrá piedad para la escoria rebelde.");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 731, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 347, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPanel1KeyPressed(evt);
+                formKeyPressed(evt);
             }
         });
 
@@ -43,7 +186,7 @@ public class Ventanajuego extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 774, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,11 +207,11 @@ public class Ventanajuego extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_SPACE){
-            micaza.sube;
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE){
+            miCaza.sube();
         }
-    }//GEN-LAST:event_jPanel1KeyPressed
+    }//GEN-LAST:event_formKeyPressed
 
     /**
      * @param args the command line arguments
@@ -106,6 +249,10 @@ public class Ventanajuego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
