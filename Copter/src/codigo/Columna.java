@@ -50,7 +50,8 @@ public class Columna {
         col_arriba = (new ImageIcon(new ImageIcon(
                 getClass().getResource("/imagenes/columna.jpg"))
                 .getImage().getScaledInstance(79, 500, Image.SCALE_DEFAULT)))
-                .getImage();        
+                .getImage();       
+        
     }
     
     public boolean mueve(Graphics2D g2, Caza c){

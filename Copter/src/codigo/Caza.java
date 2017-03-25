@@ -28,7 +28,7 @@ public class Caza extends Ellipse2D.Double{
         this.yVelocidad += 9;
     }
     //el movimiento del caza, con la rotacion cuando sube y baja
-    public void mueve(Graphics2D g2, int imagenPajaro){
+    public void mueve(Graphics2D g2, int imagenCaza){
         AffineTransform trans = new AffineTransform();
         rotacion -= yVelocidad;
         if (rotacion < -45) { rotacion = -45;}//si la rotación es menor que -45 lo deja en -45
@@ -39,7 +39,7 @@ public class Caza extends Ellipse2D.Double{
         this.y = this.y - yVelocidad;
         //pongo un tope para que no se salga por el techo
         if (this.y < 0) {this.y = 0;}
-        if (imagenPajaro < 15){
+        if (imagenCaza < 15){
             g2.drawImage(imagen1, trans,null);}
         else{
             g2.drawImage(imagen2, trans, null);
@@ -56,19 +56,15 @@ public class Caza extends Ellipse2D.Double{
         
         boolean choca = true, choca2 = true;
         
-        //chequeo el choque con el circulo de la columna superior
+        //chequeo el choque con la columna de arriba
         areaCaza.intersect(areaColArriba);
        
-        if (areaCaza.isEmpty()){
-            choca = false;
-        }
+        if (areaCaza.isEmpty()){choca = false;}
         
-        //chequeo el choque con el circulo de la columna inferior
+        //chequeo el choque con la columna de abajo
         areaCaza = new Area(this);
         areaCaza.intersect(areaColAbajo);
-        if (areaCaza.isEmpty()){
-            choca2 = false;
-        }
+        if (areaCaza.isEmpty()){choca2 = false;}
         
         return (this.intersects(c.arriba) || this.intersects(c.abajo) || choca || choca2);
     }
