@@ -50,13 +50,13 @@ public class Caza extends Ellipse2D.Double{
     public boolean chequeaColision(Columna c){
        
         Area areaCaza = new Area(this);
-        Area areaCirculo = new Area(c.circuloInferior);
-        Area areaCirculo2 = new Area(c.circuloSuperior);
+        Area areaColArriba = new Area(c.arriba);
+        Area areaColAbajo = new Area(c.abajo);
         
         boolean choca = true, choca2 = true;
         
         //chequeo el choque con el circulo de la columna superior
-        areaCaza.intersect(areaCirculo);
+        areaCaza.intersect(areaColArriba);
        
         if (areaCaza.isEmpty()){
             choca = false;
@@ -64,11 +64,11 @@ public class Caza extends Ellipse2D.Double{
         
         //chequeo el choque con el circulo de la columna inferior
         areaCaza = new Area(this);
-        areaCaza.intersect(areaCirculo2);
+        areaCaza.intersect(areaColAbajo);
         if (areaCaza.isEmpty()){
             choca2 = false;
         }
         
-        return (this.intersects(c.capitel) || this.intersects(c.base) || choca || choca2);
+        return (this.intersects(c.arriba) || this.intersects(c.abajo) || choca || choca2);
     }
 }

@@ -15,9 +15,8 @@ import javax.swing.ImageIcon;
  */
 public class Columna {
     
-    Rectangle2D capitel, base;
-    Ellipse2D circuloInferior, circuloSuperior;
-    int hueco = 120;
+    Rectangle2D arriba, abajo;
+    int hueco = 200;
     int altura_columna = 500;
     int ancho_columna = 79;
     private int ancho_pantalla;
@@ -32,34 +31,24 @@ public class Columna {
     private void posicionInicialColumna(int _ancho){
         Random aleatorio = new Random();
         int desplazamiento = aleatorio.nextInt(200)+200;
-        capitel = new Rectangle2D.Double(_ancho, 
+        arriba = new Rectangle2D.Double(_ancho, 
                                         -desplazamiento - ancho_columna/2, 
                                         ancho_columna, 
                                         altura_columna);
-        base = new Rectangle2D.Double(_ancho, 
+        abajo = new Rectangle2D.Double(_ancho, 
                                       altura_columna + hueco - desplazamiento + ancho_columna/2, 
                                       ancho_columna, 
                                       altura_columna);
-        circuloInferior = new Ellipse2D.Double(_ancho,
-                                                altura_columna + hueco - desplazamiento,
-                                                ancho_columna,
-                                                ancho_columna
-                                                    );
-        circuloSuperior = new Ellipse2D.Double(_ancho,
-                                                altura_columna - desplazamiento - hueco + ancho_columna/2,
-                                                ancho_columna,
-                                                ancho_columna
-                                                    );
     }
     
     private void precargaImagenes(){
          
         col_abajo = (new ImageIcon(new ImageIcon(
-                getClass().getResource("/imagenes/pipe_bottom.png"))
+                getClass().getResource("/imagenes/columna.jpg"))
                 .getImage().getScaledInstance(79, 500, Image.SCALE_DEFAULT)))
                 .getImage();
         col_arriba = (new ImageIcon(new ImageIcon(
-                getClass().getResource("/imagenes/pipe_top.png"))
+                getClass().getResource("/imagenes/columna.jpg"))
                 .getImage().getScaledInstance(79, 500, Image.SCALE_DEFAULT)))
                 .getImage();       
         
@@ -69,24 +58,23 @@ public class Columna {
         mueveColumna();
         g2.setColor(Color.BLUE);
         
-        g2.drawImage(col_abajo, (int)base.getX(), (int)base.getY()-ancho_columna/2, null);
-        g2.drawImage(col_arriba, (int)capitel.getX(), (int)capitel.getY()+ancho_columna/2, null);
+        g2.drawImage(col_abajo, (int)abajo.getX(), (int)abajo.getY()-ancho_columna/2, null);
+        g2.drawImage(col_arriba, (int)arriba.getX(), (int)arriba.getY()+ancho_columna/2, null);
        
         //si el pájaro está en la columna, subo 1 el marcador
-        return (capitel.getX() == c.x);
+        return (arriba.getX() == c.x);
+        
+      
     }
     
     private void mueveColumna(){
         
-        if (capitel.getX() + ancho_columna < 0){
+        if (arriba.getX() + ancho_columna < 0){
             posicionInicialColumna(ancho_pantalla);
         }
         else{
-            capitel.setFrame(capitel.getX()-1, capitel.getY(),capitel.getWidth(), capitel.getHeight());
-            base.setFrame(base.getX()-1, base.getY(),base.getWidth(), base.getHeight());
-            circuloInferior.setFrame(circuloInferior.getX()-1, circuloInferior.getY(),circuloInferior.getWidth(), circuloInferior.getHeight());
-            circuloSuperior.setFrame(circuloSuperior.getX()-1, circuloSuperior.getY(),circuloSuperior.getWidth(), circuloSuperior.getHeight());
-            
+            arriba.setFrame(arriba.getX()-1, arriba.getY(),arriba.getWidth(), arriba.getHeight());
+            abajo.setFrame(abajo.getX()-1, abajo.getY(),abajo.getWidth(), abajo.getHeight());
         }
     }
 }
