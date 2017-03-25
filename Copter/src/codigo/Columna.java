@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package codigo;
-
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,12 +9,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 import javax.swing.ImageIcon;
 
-
 /**
  *
  * @author alex
  */
 public class Columna {
+    
     Rectangle2D capitel, base;
     Ellipse2D circuloInferior, circuloSuperior;
     int hueco = 120;
@@ -78,10 +72,8 @@ public class Columna {
         g2.drawImage(col_abajo, (int)base.getX(), (int)base.getY()-ancho_columna/2, null);
         g2.drawImage(col_arriba, (int)capitel.getX(), (int)capitel.getY()+ancho_columna/2, null);
        
-        //si el caza está en la columna, subo 1 el marcador
+        //si el pájaro está en la columna, subo 1 el marcador
         return (capitel.getX() == c.x);
-
-     
     }
     
     private void mueveColumna(){

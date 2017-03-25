@@ -69,9 +69,6 @@ public class Caza extends Ellipse2D.Double{
             choca2 = false;
         }
         
-        return (this.intersects(c.capitel) || 
-                this.intersects(c.base) ||
-                choca || choca2
-                );
+        return (this.intersects(c.capitel) || this.intersects(c.base) || choca || choca2);
     }
 }

@@ -31,12 +31,12 @@ public class Ventanajuego extends javax.swing.JFrame {
     static int ALTOPANTALLA = 750;
     int ancho_columna = 79;
     int SEPARACION_COLUMNAS = ancho_columna;
-    int numColumnas = 3;
+    int numColumnas = 6;
     int puntuacion = 0;
     int contadorAnimacion = 0;
     //imagenes de los adornos
     Image casas, planetas;
-    int posicionMatorralesY = 0;
+    int posicionCasasY = 0;
     //array de columnas
     Columna[] columnas = new Columna[numColumnas];
 
@@ -84,7 +84,7 @@ public class Ventanajuego extends javax.swing.JFrame {
         
         casas = cargaImagen("/imagenes/casas.png", ALTOPANTALLA*0.05);
         planetas = cargaImagen("/imagenes/Death_Star.png", ALTOPANTALLA*0.10);
-        posicionMatorralesY = (int)(ALTOPANTALLA * 0.60)-casas.getHeight(null);
+        posicionCasasY = (int)(ALTOPANTALLA * 0.60)-casas.getHeight(null);
     }
     
     private void bucleDelJuego(){
@@ -93,7 +93,7 @@ public class Ventanajuego extends javax.swing.JFrame {
         //limpio la pantalla
         bufferGraphics.setColor(new Color(113, 198, 205)); //el color original del flappy bird
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
-        bufferGraphics.drawImage(casas, 0,posicionMatorralesY, null);
+        bufferGraphics.drawImage(casas, 0,posicionCasasY, null);
         bufferGraphics.drawImage(planetas, 0,0, null);
         //dibujo el pájaro en su nueva posición
         miCaza.mueve(bufferGraphics, contadorAnimacion);
@@ -113,7 +113,12 @@ public class Ventanajuego extends javax.swing.JFrame {
         lienzoGraphics.drawImage(buffer, 0,0, null);
         
                 //chequea si ha chocado con alguna columna
-       
+        for (int i = 0; i < numColumnas; i++) {
+            if (miCaza.chequeaColision(columnas[i])) {
+                jDialog1.setVisible(true);
+                temporizador.stop();
+            }
+        }
     }
 
     /**
