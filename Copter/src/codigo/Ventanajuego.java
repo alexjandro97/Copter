@@ -24,7 +24,7 @@ import javax.swing.Timer;
  * @author alex
  */
 public class Ventanajuego extends javax.swing.JFrame {
-    
+    //Variables globales
     boolean gameOver = false;
     
     Caza miCaza = new Caza(30);
@@ -39,6 +39,7 @@ public class Ventanajuego extends javax.swing.JFrame {
     //imagenes de los adornos
     Image casas, planetas;
     int posicionCasasY = 0;
+    //Empiezo a crear elementos del juego
     //array de columnas
     Columna[] columnas = new Columna[numColumnas];
 
@@ -69,12 +70,12 @@ public class Ventanajuego extends javax.swing.JFrame {
             columnas[i] = new Columna(ANCHOPANTALLA + i*SEPARACION_COLUMNAS, ANCHOPANTALLA);
         }
     }
-    
+    //evitamos escribir todas estas lineas de codigo cada vez que queramos meter una imagen, que son muchas.
     private Image cargaImagen(String nombreImagen, double altoImagen){
         return (new ImageIcon(new ImageIcon(getClass().getResource(nombreImagen))
                 .getImage().getScaledInstance(ANCHOPANTALLA, (int) altoImagen, Image.SCALE_DEFAULT))).getImage();
     }
-    
+    //preparo los buffers para el juego
     private void inicializaBuffers(){
         lienzoGraphics = (Graphics2D) jPanel1.getGraphics();
         buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
@@ -88,7 +89,7 @@ public class Ventanajuego extends javax.swing.JFrame {
         planetas = cargaImagen("/imagenes/Death_Star.png", ALTOPANTALLA*0.10);
         posicionCasasY = (int)(ALTOPANTALLA * 0.60)-casas.getHeight(null);
     }
-    
+    //aqui esta el verdadero funcionamiento del juego
     private void bucleDelJuego(){
         contadorAnimacion++;
         if (contadorAnimacion > 30) {contadorAnimacion = 0;}
@@ -201,13 +202,13 @@ public class Ventanajuego extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //para elevar al caza cada vez que presione la tecla del espacio.
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_SPACE){
             miCaza.sube();
         }
     }//GEN-LAST:event_formKeyPressed
-
+    //boton de salir que he colocado en el jDialog que sale cuando pierdes, cierra toda la aplicacion
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
         System.exit(0);
     }//GEN-LAST:event_jButton1MousePressed

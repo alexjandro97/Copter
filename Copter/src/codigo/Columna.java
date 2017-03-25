@@ -14,14 +14,14 @@ import javax.swing.ImageIcon;
  * @author alex
  */
 public class Columna {
-    
+    //variables globales
     Rectangle2D arriba, abajo;
     int hueco = 200;
     int altura_columna = 500;
     int ancho_columna = 79;
     private int ancho_pantalla;
     Image col_abajo, col_arriba;
-        
+        //contructor al que pasamos el ancho de la columna y de la pantalla
     public Columna (int _ancho, int _anchoPantalla){       
         posicionInicialColumna(_ancho);
         ancho_pantalla = _anchoPantalla;
@@ -42,7 +42,7 @@ public class Columna {
     }
     
     private void precargaImagenes(){
-         
+         //cargamos las imagenes de las columnas
         col_abajo = (new ImageIcon(new ImageIcon(
                 getClass().getResource("/imagenes/columna.jpg"))
                 .getImage().getScaledInstance(79, 500, Image.SCALE_DEFAULT)))
@@ -50,8 +50,7 @@ public class Columna {
         col_arriba = (new ImageIcon(new ImageIcon(
                 getClass().getResource("/imagenes/columna.jpg"))
                 .getImage().getScaledInstance(79, 500, Image.SCALE_DEFAULT)))
-                .getImage();       
-        
+                .getImage();        
     }
     
     public boolean mueve(Graphics2D g2, Caza c){
@@ -62,11 +61,9 @@ public class Columna {
         g2.drawImage(col_arriba, (int)arriba.getX(), (int)arriba.getY()+ancho_columna/2, null);
        
         //si el pájaro está en la columna, subo 1 el marcador
-        return (arriba.getX() == c.x);
-        
-      
+        return (arriba.getX() == c.x);      
     }
-    
+    //aqui tenemos el movimiento de la columna tanto por el panel como cuando ddesaparece y vuelve a entrar en el juego
     private void mueveColumna(){
         
         if (arriba.getX() + ancho_columna < 0){

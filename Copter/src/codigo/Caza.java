@@ -11,10 +11,11 @@ import javax.swing.ImageIcon;
  * @author alex
  */
 public class Caza extends Ellipse2D.Double{
+    //Variables globales
     int yVelocidad = -2;
     Image imagen1, imagen2;
     int rotacion = 0;
-    
+    //contructor al que le pasamos el radio
     public Caza(int _radio){
         super(100, 100, 33, 23);
         imagen1 = (new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/xwing.png"))
@@ -22,11 +23,11 @@ public class Caza extends Ellipse2D.Double{
         imagen2 = (new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/xwing.png"))
                 .getImage().getScaledInstance(33, 23, Image.SCALE_DEFAULT))).getImage();
     }
-    
+    //es el metodo que se ejecuta cuando presionamos el espacio
     public void sube() {
         this.yVelocidad += 9;
     }
-    
+    //el movimiento del caza, con la rotacion cuando sube y baja
     public void mueve(Graphics2D g2, int imagenPajaro){
         AffineTransform trans = new AffineTransform();
         rotacion -= yVelocidad;
@@ -46,7 +47,7 @@ public class Caza extends Ellipse2D.Double{
         yVelocidad --;
         if (yVelocidad < -3){yVelocidad = -1;}  //si la velocidad es menor que -3 la deja en -1
     }
-    
+    //chequeamos la colision con el area de las columnas y del caza
     public boolean chequeaColision(Columna c){
        
         Area areaCaza = new Area(this);
