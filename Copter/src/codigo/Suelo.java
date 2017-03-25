@@ -19,9 +19,7 @@ public class Suelo extends Rectangle2D.Double{
     
     public Suelo (double _posicionX, double _posicionY){
         super();
-        imagenSuelo = (new ImageIcon(
-                getClass().getResource("/imagenes/suelo.png"))
-                ).getImage();
+        imagenSuelo = (new ImageIcon(getClass().getResource("/imagenes/suelo.png"))).getImage();
         this.x = _posicionX;
         this.y = _posicionY;
         this.width = imagenSuelo.getWidth(null);

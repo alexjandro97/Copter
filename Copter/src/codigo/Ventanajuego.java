@@ -42,7 +42,7 @@ public class Ventanajuego extends javax.swing.JFrame {
     //Empiezo a crear elementos del juego
     //array de columnas
     Columna[] columnas = new Columna[numColumnas];
-
+    //metemos los suelos
     //los dos suelos para hacer el truco de que parezca infinito
     Suelo miSuelo1 = new Suelo(0, ALTOPANTALLA * 0.60);
     Suelo miSuelo2 = new Suelo(miSuelo1.getWidth(), ALTOPANTALLA * 0.60);
